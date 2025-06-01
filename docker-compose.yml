@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  flask:
+    build: .
+    container_name: weshare-flask
+    ports:
+      - "9090:9090"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development

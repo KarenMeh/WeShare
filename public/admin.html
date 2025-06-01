@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeShare Blog Admin</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --text-color: #1f2937;
+            --border-color: #e5e7eb;
+            --bg-color: #ffffff;
+            --hover-color: #f9fafb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-header {
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 250px;
+            gap: 2rem;
+        }
+
+        .admin-main, .admin-sidebar {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group textarea {
+            height: 200px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            font-size: 0.875rem;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .posts-list {
+            margin-top: 2rem;
+        }
+
+        .post-item {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-title {
+            margin: 0;
+            font-size: 1.125rem;
+        }
+
+        .post-meta {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-image {
+            max-width: 150px;
+            border-radius: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .stats-card {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .stats-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-links li {
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 0.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--hover-color);
+        }
+
+        .nav-links a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .preview-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--hover-color);
+            border-radius: 4px;
+        }
+
+        .preview-section h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        #markdown-preview {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin: 0 0 1.5rem 0;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="header-left">
+            <img src="/img/weshare_logo_new.png" alt="WeShare logo" height="40px" width="auto"/>
+        </div>
+        <div class="header-right">
+            <a href="/" class="btn btn-primary">View Blog</a>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <main class="admin-main">
+            <section class="admin-form">
+                <h2>Create New Post</h2>
+                <form action="/api/posts" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="title" required placeholder="Enter post title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="Digitale Visitenkarten">Digitale Visitenkarten</option>
+                            <option value="Nachhaltigkeit">Nachhaltigkeit</option>
+                            <option value="Networking">Networking</option>
+                            <option value="Tipps & Tricks">Tipps & Tricks</option>
+                            <option value="Unternehmenslösungen">Unternehmenslösungen</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description (Markdown supported)</label>
+                        <textarea id="description" name="description" required placeholder="Write your post content here..."></textarea>
+                    </div>
+
+                    <div class="preview-section">
+                        <h4>Preview</h4>
+                        <div id="markdown-preview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Featured Image</label>
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Publish Post</button>
+                </form>
+            </section>
+
+            <section class="posts-list">
+                <h2>Manage Posts</h2>
+                <div id="posts-container">
+                    <!-- Posts will be loaded here dynamically -->
+                </div>
+            </section>
+        </main>
+
+        <aside class="admin-sidebar">
+            <div class="stats-card">
+                <h3>Total Posts</h3>
+                <div class="stats-number" id="total-posts">0</div>
+            </div>
+
+            <div class="stats-card">
+                <h3>Categories</h3>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">All Posts</a></li>
+                    <li><a href="#">Digitale Visitenkarten</a></li>
+                    <li><a href="#">Nachhaltigkeit</a></li>
+                    <li><a href="#">Networking</a></li>
+                    <li><a href="#">Tipps & Tricks</a></li>
+                    <li><a href="#">Unternehmenslösungen</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Load posts when the page loads
+        document.addEventListener('DOMContentLoaded', loadPosts);
+
+        async function loadPosts() {
+            try {
+                const response = await fetch('/api/posts');
+                const posts = await response.json();
+                const container = document.getElementById('posts-container');
+                document.getElementById('total-posts').textContent = posts.length;
+                
+                container.innerHTML = posts.map(post => `
+                    <div class="post-item">
+                        <div class="post-header">
+                            <h3 class="post-title">${post.title}</h3>
+                            <div class="post-actions">
+                                <button class="btn btn-success" onclick="editPost('${post.id}')">Edit</button>
+                                <button class="btn btn-danger" onclick="deletePost('${post.id}')">Delete</button>
+                            </div>
+                        </div>
+                        <div class="post-meta">
+                            <span>${post.category}</span>
+                            <span>${post.date}</span>
+                        </div>
+                        ${post.image ? `<img src="/uploads/${post.image}" alt="${post.title}" class="post-image">` : ''}
+                        <p>${post.description.substring(0, 150)}...</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading posts:', error);
+            }
+        }
+
+        async function editPost(id) {
+            try {
+                const response = await fetch('/api/posts');
+                const posts = await response.json();
+                const post = posts.find(p => p.id === id);
+                
+                if (post) {
+                    document.getElementById('title').value = post.title;
+                    document.getElementById('category').value = post.category;
+                    document.getElementById('date').value = post.date;
+                    document.getElementById('description').value = post.description;
+                    
+                    // Add hidden input for post ID
+                    let hiddenInput = document.querySelector('input[name="post_id"]');
+                    if (!hiddenInput) {
+                        hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'post_id';
+                        document.querySelector('form').appendChild(hiddenInput);
+                    }
+                    hiddenInput.value = id;
+                }
+            } catch (error) {
+                console.error('Error loading post for edit:', error);
+            }
+        }
+
+        async function deletePost(id) {
+            if (confirm('Are you sure you want to delete this post?')) {
+                try {
+                    const formData = new FormData();
+                    formData.append('id', id);
+                    
+                    const response = await fetch('/api/posts', {
+                        method: 'DELETE',
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        loadPosts();
+                    }
+                } catch (error) {
+                    console.error('Error deleting post:', error);
+                }
+            }
+        }
+
+        // Handle form submission
+        document.querySelector('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const postId = formData.get('post_id');
+            
+            try {
+                const response = await fetch('/api/posts', {
+                    method: postId ? 'PUT' : 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    this.reset();
+                    loadPosts();
+                }
+            } catch (error) {
+                console.error('Error saving post:', error);
+            }
+        });
+
+        // Preview markdown
+        document.getElementById('description').addEventListener('input', async function(e) {
+            try {
+                const response = await fetch('/api/markdown', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        markdown: e.target.value
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('markdown-preview').innerHTML = data.html;
+                }
+            } catch (error) {
+                console.error('Error converting markdown:', error);
+            }
+        });
+    </script>
+</body>
+</html> 
