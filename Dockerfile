@@ -11,7 +11,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the entire project
 COPY . .
 
+# Create necessary directories
+RUN mkdir -p public/uploads public/data
 
-
-# Run the app
-CMD ["python", "app.py"]
+# Run the app with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:9090", "--workers", "4", "--timeout", "120", "wsgi:app"]
