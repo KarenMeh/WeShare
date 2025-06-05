@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WeShare{% endblock %}</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="main-nav" role="navigation" aria-label="Main menu">
+            <div class="nav-logo">
+                <a href="/">
+                    <img src="/img/weshare_logo_new.png" alt="WeShare logo" height="60px" width="auto"/>
+                </a>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="/#why-weshare-section">Vorteile</a></li>
+                    <li><a href="/#features">Features</a></li>
+                    <li><a href="/#unternehmen">Unternehmen</a></li>
+                    <li><a href="/#preise">Preise</a></li>
+                    <li><a href="/faq" target="_blank" rel="noopener noreferrer">FAQ</a></li>
+                    <li><a href="/blog" target="_blank" rel="noopener noreferrer">Blog</a></li>
+                    <li class="mobile-only"><a href="/#anmelden" class="btn-login">Anmelden</a></li>
+                </ul>
+                <div class="nav-action desktop-only">
+                    <a href="/#anmelden" class="btn-login">Anmelden</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+</html> 

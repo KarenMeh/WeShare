@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | WeShare - Digitale Visitenkarten</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; /* Add padding to account for fixed header height */
+        }
+
+        :root {
+            --color-blue: #007bff; /* Example blue color */
+            --color-green: #28a745; /* Example green color */
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                justify-content: space-between;
+                padding: 1rem;
+            }
+
+            .nav-logo img {
+                height: 100px !important;
+                margin: -50px 0;
+            }
+
+            .nav-right {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 80%;
+                max-width: 400px;
+                background: white;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 1000;
+                padding: 8rem 2rem 2rem;
+                box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-right.active {
+                transform: translateX(0);
+            }
+
+            .nav-links {
+                display: block;
+                position: static;
+                width: 100%;
+                height: auto;
+                padding: 0;
+                box-shadow: none;
+                right: auto;
+            }
+
+            .nav-links.active {
+                display: block;
+                right: auto;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                display: block;
+                padding: 0.5rem 0;
+            }
+
+            .nav-links .mobile-only {
+                margin-top: 2rem;
+                padding-top: 2rem;
+                border-top: 1px solid var(--gray-200);
+            }
+
+            .nav-links .mobile-only .btn-login {
+                display: block;
+                text-align: center;
+                padding: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 30px;
+                height: 21px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                z-index: 1001;
+                margin-left: auto;
+            }
+
+            .mobile-menu-btn span {
+                display: block;
+                width: 100%;
+                height: 3px;
+                background-color: var(--gray-700);
+                transition: all 0.3s ease-in-out;
+            }
+
+            .mobile-menu-btn.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+
+            .mobile-menu-btn.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-btn.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+
+            .mobile-only {
+                display: none;
+            }
+
+            .desktop-only {
+                display: block;
+            }
+
+            .nav-right {
+                position: static;
+                transform: none;
+                width: auto;
+                height: auto;
+                padding: 0;
+                box-shadow: none;
+            }
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px; /* Adjust max-width for FAQ content */
+            margin: 0 auto;
+            padding: 0 20px; /* Adjust padding as needed */
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            margin-top: 14%;
+        }
+
+        .section-subheading {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #1a1a1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee; /* Optional: adds a subtle line */
+            padding-bottom: 5px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .contact-section {
+            background-color: #f8f9fa; /* Light grey background */
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .contact-section .container {
+             max-width: 800px; /* Slightly narrower container for contact info */
+        }
+
+        .contact-section h2 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            border-bottom: none; /* Remove border for this heading */
+             padding-bottom: 0;
+        }
+
+        .contact-section p {
+            color: #4a4a4a;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            color: #1a1a1a;
+            font-size: 1.1rem;
+        }
+
+        .contact-item img {
+            margin-right: 10px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="main-nav" role="navigation" aria-label="Main menu">
+            <div class="nav-logo">
+                <img src="img/weshare_logo_new.png" alt="WeShare logo" height="60px" width="auto"/>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="/#why-weshare-section">Vorteile</a></li>
+                    <li><a href="/#features">Features</a></li>
+                    <li><a href="/#unternehmen">Unternehmen</a></li>
+                    <li><a href="/#preise">Preise</a></li>
+                    <li><a href="/faq" target="_blank" rel="noopener noreferrer">FAQ</a></li>
+                    <li><a href="/blog" target="_blank" rel="noopener noreferrer">Blog</a></li>
+                    <li class="mobile-only"><a href="/#anmelden" class="btn-login">Anmelden</a></li>
+                </ul>
+                <div class="nav-action desktop-only">
+                    <a href="/#anmelden" class="btn-login">Anmelden</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Häufig gestellte Fragen</h1>
+        <p class="section-subheading">Hier finden Sie Antworten auf die wichtigsten Fragen zu digitalen Visitenkarten</p>
+
+        <h2>Allgemeine Fragen</h2>
+        <p>Was ist eine digitale Visitenkarte?<br>Eine digitale Visitenkarte ist eine moderne Alternative zur herkömmlichen Papiervisitenkarte. Sie enthält alle Ihre Kontaktinformationen in digitaler Form und kann über einen QR-Code, NFC oder einen Link geteilt werden. Im Gegensatz zu Papiervisitenkarten können digitale Visitenkarten jederzeit aktualisiert werden, enthalten interaktive Elemente wie direkte Links zu Ihren Social-Media-Profilen und sind umweltfreundlich.</p>
+
+        <p>Wie teile ich meine digitale Visitenkarte?<br>Sie können Ihre WeShare digitale Visitenkarte auf verschiedene Arten teilen:</p>
+        <ul>
+            <li>Über den QR-Code, den Sie herunterladen und ausdrucken oder direkt vom Bildschirm scannen lassen können</li>
+            <li>Durch Teilen des direkten Links zu Ihrer Karte per E-Mail, Messenger oder SMS</li>
+            <li>Über Social-Media-Plattformen wie LinkedIn, Facebook, Twitter oder WhatsApp</li>
+            <li>Mit NFC-fähigen Geräten durch einfaches Antippen (Premium-Funktion)</li>
+        </ul>
+
+        <p>Benötige ich technisches Know-how, um eine digitale Visitenkarte zu erstellen?<br>Nein, absolut nicht. WeShare wurde so konzipiert, dass es für jeden einfach zu bedienen ist. Unser KI-Assistent führt Sie durch den Erstellungsprozess und benötigt nur wenige grundlegende Informationen, um eine professionelle digitale Visitenkarte zu erstellen. Sie können Ihre Karte später jederzeit über das benutzerfreundliche Dashboard anpassen und aktualisieren.</p>
+
+        <h2>Funktionen und Features</h2>
+        <p>Welche sozialen Medien kann ich in meine digitale Visitenkarte einbinden?<br>WeShare ermöglicht die Integration aller gängigen sozialen Medien, darunter:</p>
+        <ul>
+            <li>LinkedIn</li>
+            <li>Facebook</li>
+            <li>Instagram</li>
+            <li>Twitter/X</li>
+            <li>YouTube</li>
+            <li>TikTok</li>
+            <li>Pinterest</li>
+            <li>Snapchat</li>
+            <li>Xing</li>
+            <li>WhatsApp</li>
+            <li>Telegram</li>
+            <li>Signal</li>
+            <li>WeChat</li>
+            <li>und viele mehr</li>
+            <li>In der Premium-Version können Sie unbegrenzt viele soziale Medien einbinden.</li>
+        </ul>
+
+        <p>Wie funktioniert die Integration des Google Unternehmensprofils?<br>Die Integration Ihres Google Unternehmensprofils erfolgt in wenigen einfachen Schritten:</p>
+        <ol>
+            <li>Loggen Sie sich in Ihr WeShare Dashboard ein</li>
+            <li>Navigieren Sie zum Bereich "Integrationen"</li>
+            <li>Wählen Sie "Google Business Profil"</li>
+            <li>Folgen Sie den Anweisungen zur Verknüpfung Ihres Profils</li>
+        </ol>
+        <p>Nach der Verknüpfung werden Bewertungen und wichtige Informationen aus Ihrem Google Unternehmensprofil automatisch auf Ihrer digitalen Visitenkarte angezeigt. Dies ist besonders wertvoll für Unternehmer, da es ein effektives Reputationsmanagement ermöglicht und Vertrauen bei potenziellen Kunden schafft.</p>
+
+        <p>Welche Analysen und Statistiken bietet das Dashboard?<br>Das WeShare Dashboard bietet umfassende Einblicke in die Performance Ihrer digitalen Visitenkarte:</p>
+        <ul>
+            <li>Anzahl der Aufrufe und Besuche</li>
+            <li>Geografische Verteilung der Besucher</li>
+            <li>Verwendete Geräte und Browser</li>
+            <li>Klicks auf verschiedene Elemente (Telefon, E-Mail, Social Media, etc.)</li>
+            <li>Gespeicherte Kontakte</li>
+            <li>QR-Code-Scans</li>
+            <li>Verweildauer auf Ihrer Karte</li>
+            <li>Trendanalysen im Zeitverlauf</li>
+        </ul>
+        <p>Diese Daten helfen Ihnen zu verstehen, wie effektiv Ihre digitale Visitenkarte ist und wie Sie sie optimieren können.</p>
+
+        <h2>Inhalte und Medien</h2>
+        <p>Welche Arten von Dokumenten kann ich in meine digitale Visitenkarte einbinden?<br>Mit WeShare können Sie verschiedene Dokumenttypen in Ihre digitale Visitenkarte einbinden:</p>
+        <ul>
+            <li>PDF-Dokumente (Broschüren, Kataloge, Whitepaper)</li>
+            <li>Präsentationen (PowerPoint, Keynote)</li>
+            <li>Bilder und Grafiken (JPG, PNG, GIF)</li>
+            <li>Tabellenkalkulationen (Excel, Numbers)</li>
+            <li>Textdokumente (Word, Pages)</li>
+        </ul>
+        <p>Diese Funktion ist besonders nützlich für Vertriebsmitarbeiter, Berater und Freiberufler, die zusätzliche Informationen oder Portfolios teilen möchten.</p>
+
+        <p>Wie kann ich HTML-Codes in meine Visitenkarte integrieren?<br>Die Integration von HTML-Codes ist in wenigen Schritten möglich:</p>
+        <ol>
+            <li>Loggen Sie sich in Ihr WeShare Dashboard ein</li>
+            <li>Navigieren Sie zum Bereich "Anpassen"</li>
+            <li>Wählen Sie "HTML-Element hinzufügen"</li>
+            <li>Fügen Sie Ihren HTML-Code in das vorgesehene Feld ein</li>
+            <li>Positionieren Sie das Element an der gewünschten Stelle</li>
+            <li>Speichern Sie die Änderungen</li>
+        </ol>
+        <p>Diese Funktion ermöglicht es Ihnen, YouTube-Videos, Kalender-Widgets, Buchungssysteme, Zahlungsbuttons, Bewertungssiegel und viele andere interaktive Elemente einzubinden.</p>
+
+        <p>Kann ich Fallbeispiele oder Projekte in meine digitale Visitenkarte integrieren?<br>Ja, WeShare bietet eine spezielle Funktion zur Integration von Fallbeispielen und Projekten. Sie können:</p>
+        <ul>
+            <li>Projektbeschreibungen hinzufügen</li>
+            <li>Vorher-Nachher-Bilder einbinden</li>
+            <li>Kundenbewertungen verknüpfen</li>
+            <li>Videos von abgeschlossenen Projekten einbetten</li>
+            <li>Detaillierte Fallstudien als PDF anhängen</li>
+        </ul>
+        <p>Diese Funktion ist besonders wertvoll für Designer, Architekten, Berater und andere Dienstleister, die ihre Expertise demonstrieren möchten.</p>
+
+        <h2>SEO und Sichtbarkeit</h2>
+        <p>Wie funktioniert die SEO-Optimierung bei WeShare digitalen Visitenkarten?<br>WeShare digitale Visitenkarten sind von Grund auf für Suchmaschinen optimiert:</p>
+        <ul>
+            <li>Jede Karte erhält eine eigene Domain (z.B. ihrname.weshare.site)</li>
+            <li>Sie können individuelle Meta-Titel und Meta-Beschreibungen festlegen</li>
+            <li>Die Struktur der Seite folgt SEO-Best-Practices</li>
+            <li>Alle Bilder haben Alt-Texte für bessere Auffindbarkeit</li>
+            <li>Die Ladegeschwindigkeit ist optimiert</li>
+            <li>Strukturierte Daten (Schema.org) sind implementiert</li>
+            <li>Mobile Optimierung für besseres Ranking</li>
+        </ul>
+        <p>Durch diese Optimierungen kann Ihre digitale Visitenkarte in Suchmaschinen ranken und Ihnen passive Sichtbarkeit verschaffen, selbst wenn Sie nicht aktiv Marketing betreiben.</p>
+
+        <p>Wie kann ich die Sichtbarkeit meiner digitalen Visitenkarte verbessern?<br>Um die Sichtbarkeit Ihrer WeShare digitalen Visitenkarte zu maximieren, empfehlen wir:</p>
+        <ul>
+            <li>Fügen Sie relevante Keywords in Ihre Beschreibung und Ihren Titel ein</li>
+            <li>Verlinken Sie Ihre digitale Visitenkarte in Ihrer E-Mail-Signatur</li>
+            <li>Teilen Sie Ihre Karte regelmäßig auf sozialen Medien</li>
+            <li>Integrieren Sie den QR-Code auf gedruckten Materialien</li>
+            <li>Verlinken Sie von Ihrer Unternehmenswebsite auf Ihre digitale Visitenkarte</li>
+            <li>Aktualisieren Sie Ihre Inhalte regelmäßig</li>
+            <li>Fügen Sie relevante Dokumente und Medien hinzu</li>
+            <li>Nutzen Sie die Google Business Profil Integration</li>
+        </ul>
+        <p>Diese Maßnahmen verbessern nicht nur die Sichtbarkeit in Suchmaschinen, sondern erhöhen auch die Reichweite Ihrer digitalen Visitenkarte insgesamt.</p>
+
+        <h2>KI-Assistent und Erstellung</h2>
+        <p>Wie funktioniert der KI-Assistent bei der Erstellung meiner digitalen Visitenkarte?<br>Der WeShare KI-Assistent vereinfacht den Erstellungsprozess erheblich:</p>
+        <ul>
+            <li>Sie geben grundlegende Informationen ein (Name, Position, Unternehmen)</li>
+            <li>Der KI-Assistent schlägt ein passendes Design vor</li>
+            <li>Er hilft bei der Formulierung Ihrer Beschreibung und Ihres Titels</li>
+            <li>Er empfiehlt relevante Social-Media-Kanäle für Ihre Branche</li>
+            <li>Er optimiert automatisch Ihre Inhalte für Suchmaschinen</li>
+            <li>Er passt Farbschemata an Ihr Unternehmensbranding an</li>
+        </ul>
+        <p>Der gesamte Prozess dauert nur wenige Minuten, und Sie erhalten eine professionell gestaltete digitale Visitenkarte, die Sie jederzeit weiter anpassen können.</p>
+
+        <p>Wie kann ich meine digitale Visitenkarte nach der Erstellung anpassen?<br>Nach der Erstellung können Sie Ihre digitale Visitenkarte jederzeit über das Dashboard anpassen:</p>
+        <ul>
+            <li>Aktualisieren Sie Kontaktinformationen</li>
+            <li>Ändern Sie das Design und Farbschema</li>
+            <li>Fügen Sie neue Social-Media-Profile hinzu</li>
+            <li>Laden Sie neue Dokumente oder Medien hoch</li>
+            <li>Integrieren Sie HTML-Elemente</li>
+            <li>Passen Sie SEO-Einstellungen an</li>
+            <li>Fügen Sie Fallbeispiele oder Projekte hinzu</li>
+        </ul>
+        <p>Alle Änderungen werden sofort wirksam, und Ihre digitale Visitenkarte bleibt immer aktuell. Der KI-Assistent steht Ihnen auch bei Anpassungen zur Seite und gibt Empfehlungen für Verbesserungen.</p>
+
+        <h2>Unternehmenslösungen</h2>
+        <p>Wie funktioniert die Excel-Import-Funktion für Teams?<br>Die Excel-Import-Funktion für Teams ermöglicht die effiziente Erstellung digitaler Visitenkarten für Ihr gesamtes Unternehmen:</p>
+        <ol>
+            <li>Laden Sie unsere Excel-Vorlage herunter</li>
+            <li>Füllen Sie die Tabelle mit den E-Mail-Adressen Ihrer Mitarbeiter aus</li>
+            <li>Optional: Fügen Sie weitere Informationen wie Namen, Positionen und Abteilungen hinzu</li>
+            <li>Laden Sie die ausgefüllte Excel-Datei in Ihr Admin-Dashboard hoch</li>
+            <li>Wählen Sie die gewünschten Einstellungen für alle Karten (Design, Branding, etc.)</li>
+            <li>Starten Sie den Import-Prozess</li>
+        </ol>
+        <p>Das System generiert automatisch digitale Visitenkarten für alle Mitarbeiter und sendet ihnen Einladungen mit vorläufigen Login-Daten. Sie können wählen, ob die Karten zentral verwaltet werden oder ob Mitarbeiter ihre Karten selbst anpassen dürfen.</p>
+
+        <p>Welche Verwaltungsoptionen gibt es für Unternehmensadministratoren?<br>Als Administrator einer Unternehmenslösung haben Sie umfassende Verwaltungsoptionen:</p>
+        <ul>
+            <li>Zentrale Verwaltung aller Mitarbeiter-Visitenkarten</li>
+            <li>Einheitliches Branding über alle Karten hinweg</li>
+            <li>Berechtigungsverwaltung (wer darf was ändern)</li>
+            <li>Gruppen- und Abteilungsstrukturierung</li>
+            <li>Massenaktualisierung von Informationen</li>
+            <li>Detaillierte Nutzungsstatistiken für alle Karten</li>
+            <li>Automatische Benachrichtigungen bei wichtigen Ereignissen</li>
+            <li>Einfaches Hinzufügen und Entfernen von Mitarbeitern</li>
+        </ul>
+        <p>Diese Funktionen ermöglichen eine effiziente Verwaltung digitaler Visitenkarten auch in größeren Unternehmen und stellen sicher, dass alle Karten den Unternehmensrichtlinien entsprechen.</p>
+    </div>
+
+    <section class="contact-section" id="kontakt">
+        <div class="container">
+            <h2>Haben Sie weitere Fragen?</h2>
+            <p>Unser Support-Team steht Ihnen gerne zur Verfügung. Kontaktieren Sie uns per E-Mail oder Telefon.</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <img src="img/mail-icon.png" alt="Email icon"/>
+                    <span>support@weshare.site</span>
+                </div>
+                <div class="contact-item">
+                    <img src="img/phone-icon.png" alt="Phone icon"/>
+                    <span>+49 40 123456789</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/mobile-menu.js"></script>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="img/weshare_logo_new.png" alt="WeShare logo" width="auto"/>
+                <p>BUILD, CONNECT, GROW</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Produkt</h4>
+                    <ul>
+                        <li><a href="/#why-weshare-section">Vorteile</a></li>
+                        <li><a href="/#features">Features</a></li>
+                        <li><a href="/#preise">Preise</a></li>
+                        <li><a href="/#unternehmen">Unternehmenslösungen</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ressourcen</h4>
+                    <ul>
+                        <li><a href="/blog" target="_blank" rel="noopener noreferrer">Blog</a></li>
+                        <li><a href="/faq" target="_blank" rel="noopener noreferrer">FAQ</a></li>
+                        <li><a href="/#support">Support</a></li>
+                        <li><a href="/#kontakt">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Rechtliches</h4>
+                    <ul>
+                        <li><a href="/#impressum">Impressum</a></li>
+                        <li><a href="/#datenschutz">Datenschutz</a></li>
+                        <li><a href="/#agb">AGB</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WeShare - Ein Produkt der lokalXperten, Fuhlsbüttlerstraße 590, 22337 Hamburg</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navRight = document.querySelector('.nav-right');
+    const body = document.body;
+
+    // Create backdrop element
+    const backdrop = document.createElement('div');
+    backdrop.className = 'mobile-menu-backdrop';
+    document.body.appendChild(backdrop);
+
+    function closeMenu() {
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        mobileMenuBtn.classList.remove('active');
+        navRight.classList.remove('active');
+        backdrop.classList.remove('active');
+        body.style.overflow = '';
+    }
+
+    function openMenu() {
+        mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        mobileMenuBtn.classList.add('active');
+        navRight.classList.add('active');
+        backdrop.classList.add('active');
+        body.style.overflow = 'hidden';
+    }
+
+    if (mobileMenuBtn && navRight) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+            if (isExpanded) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        // Close menu when clicking backdrop
+        backdrop.addEventListener('click', closeMenu);
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navRight.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+
+        // Close menu when clicking a link
+        navRight.querySelectorAll('a').forEach(link => {
+            // Skip links that should open in a new tab
+            if (link.getAttribute('target') === '_blank') {
+                return;
+            }
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 768 && navRight.classList.contains('active')) {
+                    closeMenu();
+                }
+            }, 250);
+        });
+    }
+}); 
+    </script>
+</body>
+</html> 

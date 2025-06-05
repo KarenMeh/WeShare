@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeShare Blog</title>
+    <title>WeShare Blog - Digitale Visitenkarten & Networking</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px; /* Add padding to account for fixed header height */
         }
+
         :root {
             --color-blue: #007bff; /* Example blue color */
             --color-green: #28a745; /* Example green color */
@@ -17,55 +18,103 @@
 
         @media (max-width: 768px) {
             .main-nav {
-                position: fixed; /* Changed back to fixed for proper mobile behavior */
-                top: 0;
-                left: 0;
-                right: 0;
-                display: flex;
                 justify-content: space-between;
-                align-items: center;
-                background: white;
-                z-index: 1000;
                 padding: 1rem;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
 
-            .nav-logo {
-                z-index: 1001;
+            .nav-logo img {
+                height: 100px !important;
+                margin: -50px 0;
+            }
+
+            .nav-right {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 80%;
+                max-width: 400px;
+                background: white;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 1000;
+                padding: 8rem 2rem 2rem;
+                box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+                visibility: visible !important; /* Force visibility */
+            }
+
+            .nav-right.active {
+                transform: translateX(0);
+            }
+
+            .nav-links {
+                display: block;
+                position: static;
+                width: 100%;
+                height: auto;
+                padding: 0;
+                box-shadow: none;
+                right: auto;
+            }
+
+            .nav-links.active {
+                display: block;
+                right: auto;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                display: block;
+                padding: 0.5rem 0;
+            }
+
+            .nav-links .mobile-only {
+                margin-top: 2rem;
+                padding-top: 2rem;
+                border-top: 1px solid var(--gray-200);
+            }
+
+            .nav-links .mobile-only .btn-login {
+                display: block;
+                text-align: center;
+                padding: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .desktop-only {
+                display: none;
             }
 
             .mobile-menu-btn {
-                display: block !important;
+                display: flex !important;
+                flex-direction: column;
+                justify-content: space-between;
                 width: 30px;
-                height: 24px;
-                position: relative;
-                background: transparent;
+                height: 21px;
+                background: none;
                 border: none;
                 cursor: pointer;
+                padding: 0;
                 z-index: 1001;
                 margin-left: auto;
-                padding: 0;
                 visibility: visible !important; /* Force visibility */
                 opacity: 1 !important; /* Force opacity */
             }
 
             .mobile-menu-btn span {
                 display: block;
-                position: absolute;
-                height: 3px;
                 width: 100%;
-                background: #333;
-                border-radius: 3px;
-                transition: all 0.3s ease;
-                left: 0;
+                height: 3px;
+                background-color: var(--gray-700);
+                transition: all 0.3s ease-in-out;
             }
 
-            .mobile-menu-btn span:nth-child(1) { top: 0; }
-            .mobile-menu-btn span:nth-child(2) { top: 50%; transform: translateY(-50%); }
-            .mobile-menu-btn span:nth-child(3) { bottom: 0; }
-
             .mobile-menu-btn.active span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
+                transform: translateY(9px) rotate(45deg);
             }
 
             .mobile-menu-btn.active span:nth-child(2) {
@@ -73,45 +122,7 @@
             }
 
             .mobile-menu-btn.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(5px, -5px);
-            }
-
-            .nav-right {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 300px;
-                height: 100vh;
-                background: white;
-                padding: 80px 20px 20px;
-                transition: right 0.3s ease;
-                z-index: 999;
-                overflow-y: auto;
-                box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-                visibility: visible !important; /* Force visibility */
-            }
-
-            .nav-right.active {
-                right: 0;
-            }
-
-            .nav-links {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .nav-links li {
-                margin: 0;
-            }
-
-            .nav-links a {
-                display: block;
-                padding: 10px 0;
-                font-size: 18px;
-                color: #333;
-                text-decoration: none;
+                transform: translateY(-9px) rotate(-45deg);
             }
 
             .menu-overlay {
@@ -122,7 +133,7 @@
                 right: 0;
                 bottom: 0;
                 background: rgba(0, 0, 0, 0.5);
-                z-index: 998;
+                z-index: 999;
                 opacity: 0;
                 transition: opacity 0.3s ease;
                 visibility: visible !important; /* Force visibility */
@@ -136,57 +147,69 @@
 
         @media (min-width: 769px) {
             .mobile-menu-btn {
-                display: none !important;
+                display: none;
+            }
+
+            .mobile-only {
+                display: none;
+            }
+
+            .desktop-only {
+                display: block;
+            }
+
+            .nav-right {
+                position: static;
+                transform: none;
+                width: auto;
+                height: auto;
+                padding: 0;
+                box-shadow: none;
             }
         }
 
         /* Featured Slider Styles */
         .featured-slider {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 0;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
         }
 
         .slider-container {
             position: relative;
-            width: 100%;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
             overflow: hidden;
+            background-color: white;
         }
 
         .slider-wrapper {
             position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
             overflow: hidden;
+            background-color: white;
+            border-radius: 8px;
         }
 
         .slider-track {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            display: flex;
+            transition: transform 0.5s ease-in-out;
             height: 100%;
         }
 
         .slider-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            flex: 0 0 100%;
+            position: relative;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
+            transition: transform 0.5s ease-in-out;
         }
 
         .slider-slide img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: auto;
+            display: block;
             object-fit: contain;
+            max-height: 600px;
+            background-color: white;
             border-radius: 8px;
         }
 
@@ -196,44 +219,41 @@
             left: 0;
             right: 0;
             padding: 2rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            color: white;
+            color: #1a1a1a;
         }
 
         .slider-content h2 {
             font-size: 1.75rem;
             margin-bottom: 0.5rem;
-            color: white;
+            color: #1a1a1a;
         }
 
         .slider-content p {
             font-size: 1rem;
             margin-bottom: 1rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: #4a4a4a;
         }
 
         .slider-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
             background: rgba(255, 255, 255, 0.9);
             border: none;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
             z-index: 10;
-            transition: all 0.3s ease;
         }
 
         .slider-nav:hover {
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background: white;
+            transform: translateY(-50%) scale(1.1);
         }
 
         .slider-nav.prev {
@@ -255,45 +275,50 @@
         }
 
         .slider-dot {
-            width: 10px;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.5);
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .slider-dot.active {
-            background: #fff;
+            background: #1a1a1a;
             transform: scale(1.2);
         }
 
         @media (max-width: 768px) {
-            .slider-wrapper {
-                padding-top: 75%; /* 4:3 Aspect Ratio for mobile */
+            .slider-content h2 {
+                font-size: 1.5rem;
             }
-
+            
+            .slider-content p {
+                font-size: 0.875rem;
+            }
+            
             .slider-nav {
                 width: 32px;
                 height: 32px;
-                font-size: 1.2rem;
             }
-
-            .slider-nav.prev {
-                left: 0.5rem;
-            }
-
-            .slider-nav.next {
-                right: 0.5rem;
-            }
-
+            
             .slider-dots {
                 bottom: 0.5rem;
             }
+        }
 
-            .slider-dot {
-                width: 8px;
-                height: 8px;
+        @media (max-width: 480px) {
+            .slider-content {
+                padding: 1.5rem;
+            }
+            
+            .slider-content h2 {
+                font-size: 1.25rem;
+            }
+            
+            .slider-nav {
+                width: 28px;
+                height: 28px;
             }
         }
 
@@ -332,31 +357,32 @@
         }
 
         .btn-primary {
-            background-color: #3d9c40;
+            background-color: #28a745; 
             color: white;
             padding: 1rem 2rem;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            transition: background-color 0.2s ease;
         }
 
         .btn-primary:hover {
-            background-color: #3d9c40;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #0056b3;
         }
 
         .btn-secondary {
-            background-color: #4a90e2;
-            color: #ffffff;
+            background-color: white;
+            color: #007bff;
             padding: 1rem 2rem;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
             border: 2px solid #007bff;
             transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8f9fa;
         }
 
         .hero-cards {
@@ -1179,31 +1205,378 @@
             margin-right: auto;
         }
 
+        .card-showcase {
+            max-width: 400px; /* Adjust max-width as needed */
+            margin: 0 auto;
+        }
+
+        .card-showcase img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .digital-cards-overview-section h2 {
+                font-size: 2rem;
+            }
+
+            .digital-cards-overview-section .section-subheading {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Blog-specific styles */
+        .blog-hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+        }
+
+        .blog-hero h1 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .blog-hero p {
+            font-size: 1.25rem;
+            color: #4a4a4a;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-categories {
+            padding: 1rem 2rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .blog-categories::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .blog-categories ul {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-width: max-content;
+        }
+
+        .blog-categories a {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            color: #4a4a4a;
+            text-decoration: none;
+            border-radius: 20px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .blog-categories a:hover,
+        .blog-categories a.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .blog-search {
+            padding: 1.5rem 2rem;
+            background: #f8f9fa;
+        }
+
+        .blog-search input {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: block;
+            padding: 0.75rem 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        #posts-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .featured-article {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            transition: transform 0.2s ease;
+        }
+
+        .featured-article:hover {
+            transform: translateY(-5px);
+        }
+
         .featured-image {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
             width: 100%;
-            max-width: 100%;
-            height: auto;
         }
 
         .featured-image img {
-            max-width: 100%;
+            width: 50%;
             height: auto;
-            object-fit: contain;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
         }
 
+        .article-meta {
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .featured-article h2 {
+            padding: 0 2rem;
+            margin: 0 0 1rem;
+            font-size: 1.75rem;
+            color: #1a1a1a;
+        }
+
+        .featured-article p {
+            padding: 0 2rem;
+            margin: 0 0 1.5rem;
+            color: #4a4a4a;
+            line-height: 1.6;
+        }
+
+        .featured-article .btn-primary {
+            margin: 0 2rem 2rem;
+            display: inline-block;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 2rem;
+        }
+
+        .pagination a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: white;
+            color: #4a4a4a;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .pagination a:hover,
+        .pagination a.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .newsletter {
+            background: #f8f9fa;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .newsletter h3 {
+            font-size: 2rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            font-size: 1.1rem;
+            color: #4a4a4a;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            padding: 1rem 2rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .newsletter-form button:hover {
+            background: #0056b3;
+        }
+
+        .privacy-note {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 1rem;
+        }
+
+        /* Mobile menu backdrop */
+        .mobile-menu-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .mobile-menu-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive styles */
         @media (max-width: 768px) {
-            .featured-image {
-                margin-bottom: 15px;
+            .blog-hero {
+                padding: 3rem 1rem;
             }
-            
+
+            .blog-hero h1 {
+                font-size: 2rem;
+            }
+
+            .blog-hero p {
+                font-size: 1.1rem;
+            }
+
+            .blog-categories {
+                padding: 1rem;
+            }
+
+            .blog-categories ul {
+                gap: 0.5rem;
+            }
+
+            .blog-categories a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .blog-search {
+                padding: 1rem;
+            }
+
+            #posts-container {
+                padding: 1rem;
+            }
+
+            .featured-article {
+                margin-bottom: 1.5rem;
+            }
+
             .featured-image img {
-                border-radius: 6px;
+                width: 70%; /* Slightly wider on tablets for better visibility */
+            }
+
+            .article-meta {
+                padding: 0.75rem 1rem;
+                flex-wrap: wrap;
+            }
+
+            .featured-article h2 {
+                padding: 0 1rem;
+                font-size: 1.5rem;
+            }
+
+            .featured-article p {
+                padding: 0 1rem;
+                font-size: 0.95rem;
+            }
+
+            .featured-article .btn-primary {
+                margin: 0 1rem 1.5rem;
+                width: calc(100% - 2rem);
+                text-align: center;
+            }
+
+            .newsletter {
+                padding: 3rem 1rem;
+            }
+
+            .newsletter h3 {
+                font-size: 1.75rem;
+            }
+
+            .newsletter p {
+                font-size: 1rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-form input,
+            .newsletter-form button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .blog-hero p {
+                font-size: 1rem;
+            }
+
+            .featured-image img {
+                width: 90%; /* Even wider on mobile for better visibility */
+            }
+
+            .article-meta {
+                font-size: 0.8rem;
+            }
+
+            .featured-article h2 {
+                font-size: 1.3rem;
+            }
+
+            .pagination a {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+
+            .newsletter h3 {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -1212,7 +1585,9 @@
     <header>
         <nav class="main-nav" role="navigation" aria-label="Main menu">
             <div class="nav-logo">
-                <img src="img/weshare_logo_new.png" alt="WeShare logo" height="60px" width="auto"/>
+                <a href="/">
+                    <img src="/img/weshare_logo_new.png" alt="WeShare logo" height="60px" width="auto"/>
+                </a>
             </div>
             <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
                 <span></span>
@@ -1221,270 +1596,58 @@
             </button>
             <div class="nav-right">
                 <ul class="nav-links">
-                    <li><a href="#why-weshare-section">Vorteile</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#unternehmen">Unternehmen</a></li>
-                    <li><a href="#preise">Preise</a></li>
+                    <li><a href="/#why-weshare-section" onclick="window.location.href='/#why-weshare-section'">Vorteile</a></li>
+                    <li><a href="/#features" onclick="window.location.href='/#features'">Features</a></li>
+                    <li><a href="/#unternehmen" onclick="window.location.href='/#unternehmen'">Unternehmen</a></li>
+                    <li><a href="/#preise" onclick="window.location.href='/#preise'">Preise</a></li>
                     <li><a href="/faq" target="_blank" rel="noopener noreferrer">FAQ</a></li>
                     <li><a href="/blog" target="_blank" rel="noopener noreferrer">Blog</a></li>
-                    <li class="mobile-only"><a href="#anmelden" class="btn-login">Anmelden</a></li>
+                    <li class="mobile-only"><a href="/#anmelden" onclick="window.location.href='/#anmelden'" class="btn-login">Anmelden</a></li>
                 </ul>
                 <div class="nav-action desktop-only">
-                    <a href="#anmelden" class="btn-login">Anmelden</a>
+                    <a href="/#anmelden" onclick="window.location.href='/#anmelden'" class="btn-login">Anmelden</a>
                 </div>
             </div>
         </nav>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Digitale Visitenkarten für die moderne Geschäftswelt</h1>
-                <p>Nachhaltig, anpassbar und immer aktuell – Ihre digitale Visitenkarte arbeitet rund um die Uhr für Sie</p>
-                <div class="hero-buttons">
-                    <a href="#start" class="btn-primary">Kostenlos starten</a>
-                    <a href="#unternehmen" class="btn-secondary">Unternehmenslösung entdecken</a>
-                </div>
-            </div>
-            
+        <section class="blog-hero" id="blog">
+            <h1>WeShare Blog</h1>
+            <p>Aktuelle Artikel und Tipps rund um digitale Visitenkarten, Networking und Nachhaltigkeit</p>
         </section>
 
-        <section class="featured-slider">
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slider-track">
-                        <div class="slider-slide">
-                            <img src="img/Amina Farouk WS.png" alt="Digitale Visitenkarte">
-                        </div>
-                        <div class="slider-slide">
-                            <img src="img/Anna Richter WS.png" alt="Digitale Visitenkarte">
-                        </div>
-                        <div class="slider-slide">
-                            <img src="img/Johanna Bäumer WS.png" alt="Digitale Visitenkarte">
-                        </div>
-                        <div class="slider-slide">
-                            <img src="img/Laura Wagner WS.png" alt="Digitale Visitenkarte">
-                        </div>
-                        <div class="slider-slide">
-                            <img src="img/Matthias Kuhn WS.png" alt="Digitale Visitenkarte">
-                        </div>
-                        <div class="slider-slide">
-                            <img src="img/Thomas Okuro WS.png" alt="Digitale Visitenkarte">
-                        </div>
-                        <div class="slider-slide">
-                            <img src="img/Tonia Thomas WS.png" alt="Digitale Visitenkarte">
-                        </div>
-                    </div>
-                    <button class="slider-nav prev" aria-label="Previous slide">❮</button>
-                    <button class="slider-nav next" aria-label="Next slide">❯</button>
-                    <div class="slider-dots"></div>
-                </div>
-            </div>
+        <section class="blog-categories">
+            <ul>
+                <li><a href="#" class="active" data-category="all">Alle Artikel</a></li>
+                <li><a href="#" data-category="Digitale Visitenkarten">Digitale Visitenkarten</a></li>
+                <li><a href="#" data-category="Nachhaltigkeit">Nachhaltigkeit</a></li>
+                <li><a href="#" data-category="Networking">Networking</a></li>
+                <li><a href="#" data-category="Tipps & Tricks">Tipps & Tricks</a></li>
+                <li><a href="#" data-category="Unternehmenslösungen">Unternehmenslösungen</a></li>
+            </ul>
         </section>
 
-        <section class="problem-section">
-            <div class="problem-container">
-                <div class="problem-image">
-                    <img src="img/9.png" alt="Pile of business cards next to a trash can and a cut log">
-                   
-                </div>
-                <div class="problem-content">
-                    <h3>Das Problem traditioneller<br>Visitenkarten</h3>
-                    <ul>
-                        <li>✓ Massive Umweltbelastung: Für 100 Millionen Visitenkarten werden 6 Bäume gefällt!</li>
-                        <li>✓ Ressourcenverschwendung: Eine Tonne Papier benötigt 17.000 Gallonen Wasser zur Herstellung</li>
-                        <li>✓ Klimaschädlich: In Deponien setzen sie Methangas frei (28-mal schädlicher als CO₂)</li>
-                        <li>✓ Ineffizient: Verlust, Beschädigung und schnelle Veraltung bei Änderungen</li>
-                    </ul>
-                    <p>Wechseln Sie zu digitalen Visitenkarten und leisten Sie einen messbaren Beitrag zum Umweltschutz!</p>
-                </div>
-            </div>
+        <section class="blog-search">
+            <input type="search" placeholder="Suchen" aria-label="Search articles" id="search-input">
         </section>
 
-        <section class="why-weshare-section" id="why-weshare-section">
-            <div class="container">
-                <h2>Warum WeShare wählen?</h2>
-                <p class="section-subheading">Unsere digitalen Visitenkarten bieten einzigartige Vorteile, die herkömmliche Papiervisitenkarten einfach nicht bieten können</p>
+        <div id="posts-container">
+            <!-- Posts will be loaded here dynamically -->
+        </div>
 
-                <div class="feature-cards-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">🌿</div> <!-- Placeholder icon -->
-                        <h4>Umweltbewusst netzwerken</h4>
-                        <p>Ersetzen Sie Papiervisitenkarten und reduzieren Sie Ihren ökologischen Fußabdruck. Jährlich werden weltweit 9 Milliarden Visitenkarten gedruckt, 7 Milliarden landen im Müll.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔄</div> <!-- Placeholder icon -->
-                        <h4>Jederzeit aktualisierbar</h4>
-                        <p>Ändern Sie Ihre Kontaktdaten und Informationen wann immer Sie möchten. Keine veralteten Angaben mehr und keine Neudruckkosten.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div> <!-- Placeholder icon -->
-                        <h4>Ihr digitaler Vertriebsmitarbeiter</h4>
-                        <p>Verfolgen Sie Aufrufe, Shares und Kontakte über Ihr persönliches Dashboard. Ihre Karte vermarktet Sie auch dann, wenn Sie offline sind.</p>
-                    </div>
-                </div>
-            </div>
+        <section class="pagination" id="pagination">
+            <!-- Pagination will be added dynamically -->
         </section>
 
-        <section class="features-overview-section" id="features">
-            <div class="container">
-                <h2>Alle Features im Überblick</h2>
-                <p class="section-subheading">Entdecken Sie die vielfältigen Möglichkeiten unserer digitalen Visitenkarten</p>
-
-                <div class="features-grid">
-                    <div class="feature-card-small">
-                        <div class="feature-icon-small">📱</div> <!-- Placeholder icon -->
-                        <h4>Soziale Medien Integration</h4>
-                        <p>Verknüpfen Sie alle Ihre sozialen Profile mit Ihrer digitalen Visitenkarte für maximale Vernetzung.</p>
-                    </div>
-                    <div class="feature-card-small">
-                        <div class="feature-icon-small">🔍</div> <!-- Placeholder icon -->
-                        <h4>SEO-Optimierung</h4>
-                        <p>Ihre Karte ist mit Metatags versehen und kann in Suchmaschinen ranken - ein passives Marketingtool.</p>
-                    </div>
-                    <div class="feature-card-small">
-                        <div class="feature-icon-small">📊</div> <!-- Placeholder icon -->
-                        <h4>Analytics Dashboard</h4>
-                        <p>Verfolgen Sie Aufrufe, Shares und Kontakte über Ihr persönliches Dashboard. Ihre Karte vermarktet Sie auch dann, wenn Sie offline sind.</p>
-                    </div>
-                    <div class="feature-card-small">
-                        <div class="feature-icon-small">🤖</div> <!-- Placeholder icon -->
-                        <h4>KI-Assistent</h4>
-                        <p>Erstellen Sie Ihre digitale Visitenkarte in Minuten mit Hilfe unseres intelligenten KI-Assistenten.</p>
-                    </div>
-                    <div class="feature-card-small">
-                        <div class="feature-icon-small">📄</div> <!-- Placeholder icon -->
-                        <h4>Dokumente einbinden</h4>
-                        <p>Fügen Sie Ihrem Profil PDFs, Präsentationen oder andere wichtige Dokumente hinzu.</p>
-                    </div>
-                    <div class="feature-card-small">
-                        <div class="feature-icon-small">🌐</div> <!-- Placeholder icon -->
-                        <h4>Automatische Domain</h4>
-                        <p>Erhalten Sie automatisch eine personalisierte Domain basierend auf Ihrem Namen.</p>
-                    </div>
-                    <div class="feature-card-small">
-                        <div class="feature-icon-small">📝</div> <!-- Placeholder icon -->
-                        <h4>HTML-Code Integration</h4>
-                        <p>Binden Sie YouTube-Videos, Siegel oder andere HTML-Elemente in Ihre Karte ein.</p>
-                    </div>
-                    <div class="feature-card-small">
-                        <div class="feature-icon-small">🔄</div> <!-- Placeholder icon -->
-                        <h4>Google Business Profil</h4>
-                        <p>Verknüpfen Sie Ihr Google Unternehmensprofil für besseres Reputationsmanagement.</p>
-                    </div>
-                     <div class="feature-card-small">
-                        <div class="feature-icon-small">💬</div> <!-- Placeholder icon -->
-                        <h4>WhatsApp Integration</h4>
-                        <p>Ermöglichen Sie direkten Kontakt über WhatsApp mit einem Klick auf Ihre Karte.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="business-solutions-section" id="unternehmen">
-            <div class="container">
-                <h2>Unternehmenslösungen</h2>
-                <p class="section-subheading">Digitale Visitenkarten für Ihr gesamtes Team - zentral verwaltet oder individuell anpassbar</p>
-
-                <div class="solution-content">
-                    <div class="solution-text">
-                         <img src="img/weshare_logo_new.png" alt="WeShare Unternehmenslösung für Teams" class="small-logo">
-                        <h3>Effizientes Team-Management</h3>
-                        <p>Mit unserer Excel-Import-Funktion können Sie in wenigen Minuten digitale Visitenkarten für Ihr gesamtes Team erstellen - unabhängig von der Teamgröße.</p>
-
-                        <ul>
-                            <li>Zentrale oder dezentrale Verwaltung möglich</li>
-                            <li>Einfacher Import über Excel-Liste mit E-Mail-Adressen</li>
-                            <li>Automatische Einladungen an alle Teammitglieder</li>
-                            <li>Einheitliches Branding über alle Karten hinweg</li>
-                            <li>Detaillierte Nutzungsstatistiken für das Management</li>
-                        </ul>
-
-                        <a href="#unternehmensdemo" class="btn-primary">Unternehmensdemo anfordern</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="pricing-section" id="preise">
-            <div class="container">
-                <h2>Preise und Pakete</h2>
-                <p class="section-subheading">Transparente Preisgestaltung für Einzelpersonen und Unternehmen</p>
-
-                <div class="pricing-grid">
-                    <div class="pricing-card">
-                        <h3>Basis</h3>
-                        <p class="price">Kostenlos</p>
-                        <p class="description">Perfekt zum Einstieg</p>
-                        <ul>
-                            <li>1 digitale Visitenkarte</li>
-                            <li>Grundlegende Anpassungen</li>
-                            <li>QR-Code Sharing</li>
-                            <li>3 Social Media Links</li>
-                            <li>Basis-Statistiken</li>
-                        </ul>
-                        <a href="#start-basis" class="btn-pricing btn-pricing-blue">Jetzt starten</a>
-                    </div>
-
-                    <div class="pricing-card">
-                        <h3>Premium</h3>
-                        <p class="price">9,99 € /Monat</p>
-                        <p class="description">Für Profis und Selbstständige</p>
-                        <ul>
-                            <li>3 digitale Visitenkarten</li>
-                            <li>Unbegrenzte Anpassungen</li>
-                            <li>QR-Code & NFC Sharing</li>
-                            <li>Unbegrenzte Social Media Links</li>
-                            <li>Detaillierte Analytics</li>
-                            <li>Dokument-Upload</li>
-                            <li>HTML-Integration</li>
-                            <li>Eigene Domain</li>
-                        </ul>
-                        <a href="#start-premium" class="btn-pricing btn-pricing-green">Premium wählen</a>
-                    </div>
-
-                    <div class="pricing-card">
-                        <h3>Business</h3>
-                        <p class="price">Individuell</p>
-                        <p class="description">Für Teams und Unternehmen</p>
-                        <ul>
-                            <li>Unbegrenzte Visitenkarten</li>
-                            <li>Zentrales Management</li>
-                            <li>Team-Import via Excel</li>
-                            <li>Einheitliches Branding</li>
-                            <li>Admin-Dashboard</li>
-                            <li>Prioritäts-Support</li>
-                            <li>Schulungen & Onboarding</li>
-                        </ul>
-                        <a href="#start-business" class="btn-pricing btn-pricing-blue">Angebot anfordern</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        
-
-        <section class="cta-section">
-            <div class="container">
-                <h2>Bereit für die digitale Zukunft?</h2>
-                <p>Starten Sie noch heute mit Ihrer ersten digitalen Visitenkarte und erleben Sie die Vorteile selbst.</p>
-                <div class="cta-buttons">
-                    <a href="#start-gratis" class="btn-cta btn-cta-green">Kostenlos starten</a>
-                    <a href="#demo-anfordern" class="btn-cta btn-cta-blue">Demo anfordern</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="digital-cards-overview-section">
-            <div class="container">
-                <h2>Unsere digitalen Visitenkarten im Überblick</h2>
-                <p class="section-subheading">Beispiele unserer professionellen digitalen Visitenkarten für verschiedene Branchen</p>
-
-                <div class="card-showcase">
-                    <img src="img/Tonia Thomas WS.png" alt="Example of a digital business card on a mobile phone">
-                    <!-- Content displayed on the card image is part of the image itself -->
-                </div>
-            </div>
+        <section class="newsletter">
+            <h3>Bleiben Sie auf dem Laufenden</h3>
+            <p>Abonnieren Sie unseren Newsletter und erhalten Sie regelmäßig Tipps, Tricks und Neuigkeiten rund um digitale Visitenkarten und nachhaltiges Networking.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Ihre E-Mail-Adresse" required>
+                <button type="submit">Abonnieren</button>
+            </form>
+            <p class="privacy-note">Mit dem Absenden stimmen Sie unserer Datenschutzerklärung zu.</p>
         </section>
     </main>
 
@@ -1498,10 +1661,10 @@
                 <div class="footer-column">
                     <h4>Produkt</h4>
                     <ul>
-                        <li><a href="#why-weshare-section">Vorteile</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#preise">Preise</a></li>
-                        <li><a href="#unternehmen">Unternehmenslösungen</a></li>
+                        <li><a href="/#why-weshare-section">Vorteile</a></li>
+                        <li><a href="/#features">Features</a></li>
+                        <li><a href="/#preise">Preise</a></li>
+                        <li><a href="/#unternehmen">Unternehmenslösungen</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -1509,16 +1672,16 @@
                     <ul>
                         <li><a href="/blog" target="_blank" rel="noopener noreferrer">Blog</a></li>
                         <li><a href="/faq" target="_blank" rel="noopener noreferrer">FAQ</a></li>
-                        <li><a href="#support">Support</a></li>
-                        <li><a href="#kontakt">Kontakt</a></li>
+                        <li><a href="/#support">Support</a></li>
+                        <li><a href="/#kontakt">Kontakt</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h4>Rechtliches</h4>
                     <ul>
-                        <li><a href="#impressum">Impressum</a></li>
-                        <li><a href="#datenschutz">Datenschutz</a></li>
-                        <li><a href="#agb">AGB</a></li>
+                        <li><a href="/#impressum">Impressum</a></li>
+                        <li><a href="/#datenschutz">Datenschutz</a></li>
+                        <li><a href="/#agb">AGB</a></li>
                     </ul>
                 </div>
             </div>
@@ -1527,271 +1690,279 @@
             <p>&copy; 2025 WeShare - Ein Produkt der lokalXperten, Fuhlsbüttlerstraße 590, 22337 Hamburg</p>
         </div>
     </footer>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Smooth scroll handling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return; // Skip if href is just "#"
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const headerOffset = 80; // Match the scroll-padding-top value
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle navigation links
+            document.querySelectorAll('a[href^="/#"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(2); // Remove the '/#'
+                    window.location.href = '/#' + targetId;
+                });
+            });
+
+            // If we're on the main page and there's a hash in the URL, scroll to it
+            if (window.location.pathname === '/' && window.location.hash) {
+                const targetElement = document.querySelector(window.location.hash);
+                if (targetElement) {
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
+            }
+        });
+
+        let allPosts = [];
+        let currentPage = 1;
+        const postsPerPage = 5;
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        // Load posts when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Category filter
+            document.querySelectorAll('.blog-categories a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.blog-categories a').forEach(a => a.classList.remove('active'));
+                    link.classList.add('active');
+                    currentCategory = link.dataset.category;
+                    currentPage = 1;
+                    loadPosts();
+                });
+            });
+
+            // Search
+            const searchInput = document.getElementById('search-input');
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchQuery = e.target.value.toLowerCase();
+                    currentPage = 1;
+                    loadPosts();
+                }, 300);
+            });
+        }
+
+        async function loadPosts() {
+            try {
+                const response = await fetch('/api/posts');
+                allPosts = await response.json();
+                
+                // Filter posts based on category and search
+                let filteredPosts = allPosts;
+                
+                if (currentCategory !== 'all') {
+                    filteredPosts = filteredPosts.filter(post => post.category === currentCategory);
+                }
+                
+                if (searchQuery) {
+                    filteredPosts = filteredPosts.filter(post => 
+                        post.title.toLowerCase().includes(searchQuery) ||
+                        post.description.toLowerCase().includes(searchQuery)
+                    );
+                }
+
+                // Sort posts by date (newest first)
+                filteredPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                // Update display
+                updatePostsDisplay(filteredPosts);
+                updatePagination(filteredPosts.length);
+            } catch (error) {
+                console.error('Error loading posts:', error);
+            }
+        }
+
+        function updatePostsDisplay(posts) {
+            const container = document.getElementById('posts-container');
+            const startIndex = (currentPage - 1) * postsPerPage;
+            const endIndex = startIndex + postsPerPage;
+            const postsToShow = posts.slice(startIndex, endIndex);
+            
+            container.innerHTML = postsToShow.map(post => `
+                <section class="featured-article">
+                    ${post.image ? `
+                        <div class="featured-image">
+                            <img src="${post.image_url || `/uploads/${post.image}`}" 
+                                 alt="${post.title}" 
+                                 class="article-image"
+                                 onerror="this.onerror=null; this.src='/img/placeholder-image.svg'; this.alt='Image not found'">
+                        </div>
+                    ` : ''}
+                    <div class="article-meta">
+                        <span class="category">${post.category}</span>
+                        <span class="date">${formatDate(post.date)}</span>
+                    </div>
+                    <h2>${post.title}</h2>
+                    <p>${post.description.substring(0, 200)}...</p>
+                    <a href="/blog" class="btn-primary">Weiterlesen</a>
+                </section>
+            `).join('');
+        }
+
+        function updatePagination(totalPosts) {
+            const totalPages = Math.ceil(totalPosts / postsPerPage);
+            const pagination = document.getElementById('pagination');
+            
+            let paginationHTML = '';
+            
+            // Previous page
+            if (currentPage > 1) {
+                paginationHTML += `<a href="#" data-page="${currentPage - 1}">←</a>`;
+            }
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `
+                    <a href="#" class="${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>
+                `;
+            }
+            
+            // Next page
+            if (currentPage < totalPages) {
+                paginationHTML += `<a href="#" data-page="${currentPage + 1}">→</a>`;
+            }
+            
+            pagination.innerHTML = paginationHTML;
+            
+            // Add click handlers
+            pagination.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = parseInt(link.dataset.page);
+                    loadPosts();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        }
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('de-DE', options);
+        }
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing mobile menu in blog...');
+            
+            // Get elements
+            const menuButton = document.querySelector('.mobile-menu-btn');
+            const navMenu = document.querySelector('.nav-right');
+            const body = document.body;
+
+            if (!menuButton || !navMenu) {
+                console.error('Mobile menu elements not found:', { menuButton, navMenu });
+                return;
+            }
+
+            console.log('Mobile menu elements found:', {
+                menuButton: menuButton.offsetParent !== null,
+                navMenu: navMenu.offsetParent !== null,
+                menuButtonDisplay: window.getComputedStyle(menuButton).display,
+                menuButtonVisibility: window.getComputedStyle(menuButton).visibility,
+                menuButtonOpacity: window.getComputedStyle(menuButton).opacity
+            });
+
+            // Create overlay if it doesn't exist
+            let overlay = document.querySelector('.menu-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'menu-overlay';
+                document.body.appendChild(overlay);
+                console.log('Created menu overlay');
+            }
+
+            // Menu toggle function
+            function toggleMenu(e) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                console.log('Toggling menu...');
+                const isOpen = menuButton.classList.contains('active');
+                
+                // Toggle classes
+                menuButton.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                // Toggle body scroll
+                body.style.overflow = isOpen ? '' : 'hidden';
+                
+                // Toggle aria-expanded
+                menuButton.setAttribute('aria-expanded', !isOpen);
+                
+                console.log('Menu toggled:', {
+                    isOpen: !isOpen,
+                    menuButtonActive: menuButton.classList.contains('active'),
+                    navMenuActive: navMenu.classList.contains('active'),
+                    overlayActive: overlay.classList.contains('active')
+                });
+            }
+
+            // Event Listeners
+            menuButton.addEventListener('click', function(e) {
+                console.log('Menu button clicked');
+                toggleMenu(e);
+            });
+            console.log('Added click listener to menu button');
+
+            overlay.addEventListener('click', function(e) {
+                console.log('Overlay clicked');
+                toggleMenu(e);
+            });
+            console.log('Added click listener to overlay');
+
+            // Close menu when clicking links
+            const menuLinks = navMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                if (!link.hasAttribute('target')) {
+                    link.addEventListener('click', function(e) {
+                        console.log('Menu link clicked:', link.textContent);
+                        toggleMenu(e);
                     });
                 }
             });
-        });
+            console.log('Added click listeners to menu links');
 
-        // Get all necessary elements
-        const track = document.querySelector('.slider-track');
-        const slides = Array.from(document.querySelectorAll('.slider-slide'));
-        const dotsContainer = document.querySelector('.slider-dots');
-        const prevButton = document.querySelector('.slider-nav.prev');
-        const nextButton = document.querySelector('.slider-nav.next');
-
-        // Check if we have all required elements
-        if (!track || !slides.length || !dotsContainer || !prevButton || !nextButton) {
-            console.error('Missing required slider elements');
-            return;
-        }
-
-        // Set up initial state
-        let currentIndex = 0;
-        const totalSlides = slides.length;
-        let slideInterval;
-
-        // Set up the slides
-        slides.forEach((slide, index) => {
-            // Position each slide
-            slide.style.position = 'absolute';
-            slide.style.left = `${index * 100}%`;
-            slide.style.width = '100%';
-            slide.style.transition = 'left 0.5s ease-in-out';
-
-            // Create dot for this slide
-            const dot = document.createElement('div');
-            dot.className = 'slider-dot';
-            if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => showSlide(index));
-            dotsContainer.appendChild(dot);
-        });
-
-        // Function to show a specific slide
-        function showSlide(index) {
-            // Handle index bounds
-            if (index < 0) index = totalSlides - 1;
-            if (index >= totalSlides) index = 0;
-
-            // Update current index
-            currentIndex = index;
-
-            // Move slides
-            slides.forEach((slide, i) => {
-                const offset = (i - currentIndex) * 100;
-                slide.style.left = `${offset}%`;
-            });
-
-            // Update dots
-            const dots = dotsContainer.querySelectorAll('.slider-dot');
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIndex);
-            });
-        }
-
-        // Function to show next slide
-        function nextSlide() {
-            showSlide(currentIndex + 1);
-        }
-
-        // Function to show previous slide
-        function prevSlide() {
-            showSlide(currentIndex - 1);
-        }
-
-        // Start automatic sliding
-        function startAutoSlide() {
-            if (slideInterval) clearInterval(slideInterval);
-            slideInterval = setInterval(nextSlide, 3000);
-        }
-
-        // Stop automatic sliding
-        function stopAutoSlide() {
-            if (slideInterval) {
-                clearInterval(slideInterval);
-                slideInterval = null;
-            }
-        }
-
-        // Add event listeners
-        prevButton.addEventListener('click', () => {
-            prevSlide();
-            stopAutoSlide();
-            startAutoSlide();
-        });
-
-        nextButton.addEventListener('click', () => {
-            nextSlide();
-            stopAutoSlide();
-            startAutoSlide();
-        });
-
-        // Pause on hover
-        const sliderContainer = document.querySelector('.slider-container');
-        sliderContainer.addEventListener('mouseenter', stopAutoSlide);
-        sliderContainer.addEventListener('mouseleave', startAutoSlide);
-
-        // Add touch support
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        sliderContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-            stopAutoSlide();
-        });
-
-        sliderContainer.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].clientX;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    nextSlide();
-                } else {
-                    prevSlide();
-                }
-            }
-            startAutoSlide();
-        });
-
-        // Initialize the slider
-        showSlide(0);
-        startAutoSlide();
-
-        // Log for debugging
-        console.log('Slider initialized with', totalSlides, 'slides');
-    }); 
-
-    // Mobile menu functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Initializing mobile menu...');
-        
-        // Get elements
-        const menuButton = document.querySelector('.mobile-menu-btn');
-        const navMenu = document.querySelector('.nav-right');
-        const body = document.body;
-
-        if (!menuButton || !navMenu) {
-            console.error('Mobile menu elements not found:', { menuButton, navMenu });
-            return;
-        }
-
-        console.log('Mobile menu elements found:', {
-            menuButton: menuButton.offsetParent !== null,
-            navMenu: navMenu.offsetParent !== null,
-            menuButtonDisplay: window.getComputedStyle(menuButton).display,
-            menuButtonVisibility: window.getComputedStyle(menuButton).visibility,
-            menuButtonOpacity: window.getComputedStyle(menuButton).opacity
-        });
-
-        // Create overlay if it doesn't exist
-        let overlay = document.querySelector('.menu-overlay');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.className = 'menu-overlay';
-            document.body.appendChild(overlay);
-            console.log('Created menu overlay');
-        }
-
-        // Menu toggle function
-        function toggleMenu(e) {
-            if (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            console.log('Toggling menu...');
-            const isOpen = menuButton.classList.contains('active');
-            
-            // Toggle classes
-            menuButton.classList.toggle('active');
-            navMenu.classList.toggle('active');
-            overlay.classList.toggle('active');
-            
-            // Toggle body scroll
-            body.style.overflow = isOpen ? '' : 'hidden';
-            
-            // Toggle aria-expanded
-            menuButton.setAttribute('aria-expanded', !isOpen);
-            
-            console.log('Menu toggled:', {
-                isOpen: !isOpen,
-                menuButtonActive: menuButton.classList.contains('active'),
-                navMenuActive: navMenu.classList.contains('active'),
-                overlayActive: overlay.classList.contains('active')
-            });
-        }
-
-        // Event Listeners
-        menuButton.addEventListener('click', function(e) {
-            console.log('Menu button clicked');
-            toggleMenu(e);
-        });
-        console.log('Added click listener to menu button');
-
-        overlay.addEventListener('click', function(e) {
-            console.log('Overlay clicked');
-            toggleMenu(e);
-        });
-        console.log('Added click listener to overlay');
-
-        // Close menu when clicking links
-        const menuLinks = navMenu.querySelectorAll('a');
-        menuLinks.forEach(link => {
-            if (!link.hasAttribute('target')) {
-                link.addEventListener('click', function(e) {
-                    console.log('Menu link clicked:', link.textContent);
-                    toggleMenu(e);
-                });
-            }
-        });
-        console.log('Added click listeners to menu links');
-
-        // Close menu on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-                console.log('Escape key pressed');
-                toggleMenu();
-            }
-        });
-
-        // Close menu on window resize
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
-                    console.log('Window resized to desktop width');
+            // Close menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                    console.log('Escape key pressed');
                     toggleMenu();
                 }
-            }, 250);
+            });
+
+            // Close menu on window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                        console.log('Window resized to desktop width');
+                        toggleMenu();
+                    }
+                }, 250);
+            });
+
+            // Log initial state
+            console.log('Mobile menu initialized');
+            console.log('Menu button visible:', menuButton.offsetParent !== null);
+            console.log('Menu button display:', window.getComputedStyle(menuButton).display);
+            console.log('Menu button visibility:', window.getComputedStyle(menuButton).visibility);
+            console.log('Menu button opacity:', window.getComputedStyle(menuButton).opacity);
         });
-
-        // Log initial state
-        console.log('Mobile menu initialized');
-        console.log('Menu button visible:', menuButton.offsetParent !== null);
-        console.log('Menu button display:', window.getComputedStyle(menuButton).display);
-        console.log('Menu button visibility:', window.getComputedStyle(menuButton).visibility);
-        console.log('Menu button opacity:', window.getComputedStyle(menuButton).opacity);
-    });
-</script>
-
+    </script>
+     <script src="/js/slider.js"></script>
+     
 </body>
 </html> 
